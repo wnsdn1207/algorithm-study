@@ -43,9 +43,9 @@ public class Problem_14248 {
             int node = queue.remove();
             int distance = distances[node];
 
-            // 왼쪽 점프
             int jump;
 
+            /* 왼쪽 점프 */
             jump = node - distance;
             if (jump >= 0 && !visited[jump]) {
                 queue.add(jump);
@@ -53,6 +53,7 @@ public class Problem_14248 {
                 visited[jump] = true;
             }
 
+            /* 오른쪽 점프 */
             jump = node + distance;
             if (jump < N && !visited[jump]) {
                 queue.add(jump);
