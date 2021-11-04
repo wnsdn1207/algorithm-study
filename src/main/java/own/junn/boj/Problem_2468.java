@@ -19,7 +19,7 @@ public class Problem_2468 {
     static int[] dx = {0, 0, -1, 1};
     static int[] dy = {1, -1, 0, 0};
 
-    static PriorityQueue<Integer> minHeap = new PriorityQueue<>((o1, o2) -> o2 - o1);
+    static PriorityQueue<Integer> maxHeap = new PriorityQueue<>((o1, o2) -> o2 - o1);
 
     public static void main(String[] args) throws Exception {
         N = Integer.parseInt(reader.readLine());
@@ -34,7 +34,7 @@ public class Problem_2468 {
             }
         }
 
-        for (int i=1; i<100; i++) {
+        for (int i=0; i<100; i++) {
             clonedMap = new int[N][N];
             for (int j=0; j<N; j++) {
                 System.arraycopy(map[j], 0, clonedMap[j], 0, N);
@@ -52,9 +52,9 @@ public class Problem_2468 {
             if (landCnt == 0) {
                 break;
             }
-            minHeap.add(landCnt);
+            maxHeap.add(landCnt);
         }
-        System.out.println(minHeap.poll());
+        System.out.println(maxHeap.poll());
     }
 
     static void bfs(int height, int x, int y) {
