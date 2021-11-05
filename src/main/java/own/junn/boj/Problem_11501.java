@@ -6,6 +6,10 @@ import java.util.StringTokenizer;
 
 /**
  * 11501 - 주식
+ *
+ * 이 문제의 핵심은 loop문을 반대로 순회시키는 것에 있다.
+ * 주식의 수익금을 구하는 문제이므로,
+ * max값보다 가변값이 클 경우 max값에 세팅, max값보다 작을 경우 차액을 더해주는 형식으로 풀어야 한다.
  */
 public class Problem_11501 {
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
