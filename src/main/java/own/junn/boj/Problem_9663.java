@@ -47,27 +47,6 @@ public class Problem_9663 {
         reader.close();
     }
 
-    static void arrange(int x, int y) {
-        visited[x][y] = true;
-
-        Point pos = new Point(x, y);
-
-        int ax, ay;
-        for (int i=0; i<8; i++) {
-            int tx = pos.x, ty = pos.y;
-            do {
-                ax = tx + dx[i];
-                ay = ty + dy[i];
-
-                if (isValidRange(ax, ay) && !visited[ax][ay]) {
-                    visited[ax][ay] = true;
-                    tx = ax;
-                    ty = ay;
-                }
-            } while (!isEndpoint(ax, ay));
-        }
-    }
-
     static boolean isValidRange(int x, int y) {
         return x >= 0 && x < N && y >= 0 && y < N;
     }
