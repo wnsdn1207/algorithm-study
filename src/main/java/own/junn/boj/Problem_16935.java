@@ -75,52 +75,110 @@ public class Problem_16935 {
         }
         private int[][] operate_1() {
             // 상하 반전
-            System.out.println("One Operation");
+            int length = array.length;
+
+            for (int i=0; i<length/2; i++) {
+                for (int j=0; j<array[i].length; j++) {
+                    int idx = length-1;
+
+                    int tmp = array[i][j];
+                    array[i][j] = array[idx-i][j];
+                    array[idx-i][j] = tmp;
+                }
+            }
             return array;
         }
         private int[][] operate_2() {
             // 좌우 반전
-            System.out.println("Two Operation");
+            int length = array[0].length;
+
+            for (int i=0; i<array.length; i++) {
+                for (int j=0; j<length/2; j++) {
+                    int idx = length - 1;
+
+                    int tmp = array[i][j];
+                    array[i][j] = array[i][idx-j];
+                    array[i][idx-j] = tmp;
+                }
+            }
             return array;
         }
         private int[][] operate_3() {
             // 오른쪽으로 90도 회전
-            System.out.println("Three Operation");
+            int[][] rotateToRight = new int[array[0].length][array.length];
+
+            for (int i=0; i< rotateToRight.length; i++) {
+                for (int j=0; j<rotateToRight[i].length; j++) {
+                    rotateToRight[i][j] = array[array.length-1-j][i];
+                }
+            }
+
+            array = rotateToRight;
             return array;
         }
         private int[][] operate_4() {
             // 왼쪽으로 90도 회전
-            System.out.println("Four Operation");
+            int[][] rotateToLeft = new int[array[0].length][array.length];
+
+            for (int i=0; i< rotateToLeft.length; i++) {
+                for (int j=0; j<rotateToLeft[i].length; j++) {
+                    rotateToLeft[i][j] = array[j][array[j].length-1-i];
+                }
+            }
+
+            array = rotateToLeft;
             return array;
         }
         private int[][] operate_5() {
-            // N/2×M/2인 4개의 부분 배열로 나눠야 한다.
-            /**
-             * 12
-             * 43
-             *
-             * 기준으로,
-             * 1>2 이동
-             * 2>3 이동
-             * 3>4 이동
-             * 4>1 이동
-             */
-            System.out.println("Five Operation");
+            // 4사분면 형태로 분할 -> 각 사분면끼리의 교환
+            // 1>2>3>4>1 이동
+            int height = array.length/2;
+            int width = array[0].length/2;
+
+            // 너비의 반에 해당하는 위치의 세로 절반 선을 기준으로 좌우 위치 교환
+            for (int i=0; i<array.length; i++) {
+                for (int j=0; j<width; j++) {
+                    int tmp = array[i][j];
+                    array[i][j] = array[i][j+width];
+                    array[i][j+width] = tmp;
+                }
+            }
+
+            // 1사분면과 3사분면 간의 위치 교환
+            for (int i=0; i<height; i++) {
+                for (int j=0; j<width; j++) {
+                    int tmp = array[i][j];
+                    array[i][j] = array[i+height][j+width];
+                    array[i+height][j+width] = tmp;
+                }
+            }
+
             return array;
         }
         private int[][] operate_6() {
-            // // N/2×M/2인 4개의 부분 배열로 나눠야 한다.
-            /**
-             * 12
-             * 43
-             *
-             * 기준으로,
-             * 1>4 이동
-             * 4>3 이동
-             * 3>2 이동
-             * 2>1 이동
-             */
-            System.out.println("Six Operation");
+            // 4사분면 형태로 분할 -> 각 사분면끼리의 교환
+            // 1>4>3>2>1
+            int height = array.length/2;
+            int width = array[0].length/2;
+
+            // 높이의 반에 해당하는 위치의 가로 절반 선을 기준으로 상하 위치 교환
+            for (int i=0; i<height; i++) {
+                for (int j=0; j<array[0].length; j++) {
+                    int tmp = array[i][j];
+                    array[i][j] = array[i+height][j];
+                    array[i+height][j] = tmp;
+                }
+            }
+
+            // 1사분면과 3사분면 간의 위치 교환
+            for (int i=0; i<height; i++) {
+                for (int j=0; j<width; j++) {
+                    int tmp = array[i][j];
+                    array[i][j] = array[i+height][j+width];
+                    array[i+height][j+width] = tmp;
+                }
+            }
+
             return array;
         }
     }
