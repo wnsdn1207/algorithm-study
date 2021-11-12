@@ -32,7 +32,6 @@ public class Problem_9663 {
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
                     if (!visited[i][j]) {
-                        arrange(i, j);
                         count++;
                     }
                 }
