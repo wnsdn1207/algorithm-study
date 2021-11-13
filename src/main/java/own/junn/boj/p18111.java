@@ -22,6 +22,7 @@ import java.util.StringTokenizer;
  *
  * 이 때, 탐색 기준값을 MIN~MAX로 올라가며 탐색을 하기 때문에
  * 최종적으로, 시간은 minumum으로 세팅될 것이고, 높이는 MAX로 올라가며 가장 높은 높이가 세팅될 것이다.
+ *
  * 
  */
 public class p18111 {
