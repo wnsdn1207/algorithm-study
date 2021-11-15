@@ -2,6 +2,7 @@ package own.junn.boj;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 /**
  * 2615 - 오목
@@ -10,145 +11,64 @@ public class p2615 {
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     static int[][] map = new int[19][19];
-    static StringBuilder sb = new StringBuilder();
-
+    static int[] dx = {1, 1, 0, -1};
+    static int[] dy = {0, 1, 1, 1};
     public static void main(String[] args) throws Exception {
-        for (int i=0; i<map.length-1; i++) {
-            String[] input = reader.readLine().split(" ");
-            for (int j=0; j<input.length; j++) {
-                map[i][j] = Integer.parseInt(input[j]);
+        for (int i=0; i<19; i++) {
+            StringTokenizer st = new StringTokenizer(reader.readLine(), " ");
+            for (int j=0; j<19; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        for (int i=0; i<map.length; i++) {
-            for (int j=0; j<map[i].length; j++) {
-                if (isStone(map[i][j]) && isWinner(i, j, map)) {
-                    sb.append(map[i][j])
-                      .append("\n")
-                      .append(i+1)
-                      .append(" ")
-                      .append(j+1);
-                    break;
+        int count;
+        for (int i=0; i<19; i++) {
+            for (int j=0; j<19; j++) {
+                count = 0;
+                if (map[i][j] == 1 || map[i][j] == 2) {
+                    count++;
+                    for (int k=0; k<4; k++) {
+                        int ai = i;
+                        int aj = j;
+                        while (count < 5) {
+                            ai += dx[k];
+                            aj += dy[k];
+
+                            if (!isValidRange(ai, aj)) {
+                                count=1;
+                                break;
+                            }
+
+                            if (map[i][j] == map[ai][aj]) {
+                                count++;
+                            } else {
+                                count=1;
+                                break;
+                            }
+
+                            if (count==5) {
+                                if (
+                                        (isValidRange(ai+dx[k], aj+dy[k]) && (map[i][j] == map[ai+dx[k]][aj+dy[k]])) ||
+                                        (isValidRange(i-dx[k], j-dy[k])   && (map[i][j] == map[i-dx[k]][j-dy[k]]))
+                                ) {
+                                    count=1;
+                                    break;
+                                } else {
+                                    System.out.println(map[i][j]);
+                                    System.out.println((i+1)+" "+(j+1));
+                                    return;
+                                }
+                            }
+                        }
+                    }
                 }
             }
-
-            if (sb.length()>0) {
-                break;
-            }
-        }
-        System.out.println(sb.length() > 0 ? sb : "0");
-
-        reader.close();
-    }
-
-    static boolean isWinner(int x, int y, int[][] map) {
-        return verticalWin(x, y, map) ||
-                horizontalWin(x, y, map) ||
-                rightDiagonalWin(x, y, map) ||
-                leftDiagonalWin(x, y, map);
-    }
-
-    static boolean verticalWin(int x, int y, int[][] map) {
-        for (int i=1; i<5; i++) {
-            int a = x+(i-1);
-            int b = x+i;
-
-            if (!isValidRange(a, y) || !isValidRange(b, y)) {
-                return false;
-            }
-
-            if (map[a][y] != map[b][y]) {
-                return false;
-            }
         }
 
-        if (!isValidRange(x-1, y) && !isValidRange(x+5, y)) {
-            return true;
-        } else if (!isValidRange(x-1, y)) {
-            return isValidRange(x+5, y) && map[x][y] != map[x+5][y];
-        } else {
-            return isValidRange(x-1, y) && map[x][y] != map[x-1][y];
-        }
-    }
-
-    static boolean horizontalWin(int x, int y, int[][] map) {
-        for (int i=1; i<5; i++) {
-            int a = y+(i-1);
-            int b = y+i;
-
-            if (!isValidRange(x, a) || !isValidRange(x, b)) {
-                return false;
-            }
-
-            if (map[x][a] != map[x][b]) {
-                return false;
-            }
-        }
-
-        if (!isValidRange(x, y-1) && !isValidRange(x, y+5)) {
-            return true;
-        } else if (!isValidRange(x, y-1)) {
-            return isValidRange(x, y+5) && map[x][y] != map[x][y+5];
-        } else {
-            return isValidRange(x, y-1) && map[x][y] != map[x][y-1];
-        }
-    }
-
-    static boolean rightDiagonalWin(int x, int y, int[][] map) {
-        for (int i=1; i<5; i++) {
-            int ax1 = x+(i-1);
-            int ay1 = y+(i-1);
-            int ax2 = x+i;
-            int ay2 = y+i;
-
-            if (!isValidRange(ax1, ay1) || !isValidRange(ax2, ay2)) {
-                return false;
-            }
-
-            if (map[ax1][ay1] != map[ax2][ay2]) {
-                return false;
-            }
-        }
-
-        if (!isValidRange(x-1, y-1) && !isValidRange(x+5, y+5)) {
-            return true;
-        } else if (!isValidRange(x-1, y-1)) {
-            return isValidRange(x+5, y+5) && map[x][y] != map[x+5][y+5];
-        } else {
-            return isValidRange(x-1, y-1) && map[x][y] != map[x-1][y-1];
-        }
-    }
-
-    static boolean leftDiagonalWin(int x, int y, int[][] map) {
-        for (int i=1; i<5; i++) {
-            int ax1 = x+(i-1);
-            int ay1 = y-(i-1);
-            int ax2 = x+i;
-            int ay2 = y-i;
-
-            if (!isValidRange(ax1, ay1) || !isValidRange(ax2, ay2)) {
-                return false;
-            }
-
-            if (map[ax1][ay1] != map[ax2][ay2]) {
-                return false;
-            }
-        }
-
-        if (!isValidRange(x-1, y+1) && !isValidRange(x+5, y-5)) {
-            return true;
-        } else if (!isValidRange(x-1, y+1)) {
-            return isValidRange(x+5, y-5) && map[x][y] != map[x+5][y-5];
-        } else {
-            return isValidRange(x-1, y+1) && map[x][y] != map[x-1][y+1];
-        }
+        System.out.println(0);
     }
 
     static boolean isValidRange(int x, int y) {
-        return x >= 0 && x < 19 && y >= 0 && y < 19;
-    }
-
-    static boolean isStone(int n) {
-        return n==1 || n==2;
+        return x>=0 && x<19 && y>=0 && y<19;
     }
 }
