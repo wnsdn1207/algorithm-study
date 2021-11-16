@@ -3,11 +3,10 @@ package own.junn.boj;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 /**
- * 12081 - Yousei TOTO
+ * 12081 - Yonsei TOTO
  */
 public class p12081 {
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
