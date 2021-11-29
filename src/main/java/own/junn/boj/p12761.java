@@ -53,7 +53,7 @@ public class p12761 {
                     ay = node + dy[i];
                 }
 
-                if (isValid(ay) && (stones[ay] == -1 || stones[ay] > stones[node] + 1)) {
+                if (isValid(ay) && (stones[ay] == -1)) {
                     stones[ay] = stones[node] + 1;
                     queue.add(ay);
                 }
