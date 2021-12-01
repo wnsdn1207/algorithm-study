@@ -8,6 +8,8 @@ import java.awt.*;
 import java.io.FileReader;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Test {
     @org.junit.jupiter.api.Test
@@ -311,5 +313,37 @@ public class Test {
         }
 
         System.out.println(max);
+    }
+
+    @org.junit.jupiter.api.Test
+    public void regexTest() {
+        String toConvert = "(()()())( )";
+
+        toConvert = toConvert.replace("()", "2");
+        System.out.println(toConvert);
+        Pattern tmpPattern = Pattern.compile("\\(?[\\d]\\)*");
+
+        Matcher matcher = tmpPattern.matcher("");
+        while (matcher.find()) {
+            System.out.println(matcher.group());
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    public void doubleTest() {
+        double a = 2.21222;
+        System.out.println(a);
+    }
+
+    @org.junit.jupiter.api.Test
+    public void extendsTest() {
+        GrandClass grandClass = new ChildClass("a1", "b", "c", "a2", "d", "e", "a3", "d2", "y", "z");
+        System.out.println(grandClass);
+
+        String jsonString = "{\"a\": \"1\", \"b\": \"2\", \"c\": \"3\", \"d\": \"4\", \"y\": \"20\"}";
+        ChildClass childClass = new Gson().fromJson(jsonString, ChildClass.class);
+        System.out.println(childClass);
+
+//        System.out.println(childClass);
     }
 }
