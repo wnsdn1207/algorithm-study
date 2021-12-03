@@ -2,7 +2,6 @@ package own.junn.boj;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /**
@@ -55,13 +54,6 @@ public class p5212 {
                 }
             }
         }
-
-//        System.out.printf("maxX : %d, minX : %d\n", maxX, minX);
-//        System.out.printf("maxY : %d, minY : %d\n", maxY, minY);
-//
-//        for (boolean[] arr : changes) {
-//            System.out.println(Arrays.toString(arr));
-//        }
 
         StringBuilder sb = new StringBuilder();
         for (int i=minX; i<=maxX; i++) {
