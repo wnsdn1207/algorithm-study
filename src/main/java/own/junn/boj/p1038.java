@@ -4,60 +4,39 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 1038 - 감소하는 수
  */
 public class p1038 {
+    static ArrayList<Long> list;
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    static int N;
-
-    static int[] storage = new int[1000001];
-    static int[] addByDigits = {0, 1, 10, 210, 3210, 43210, 543210, 6543210, 76543210, 876543210};
     public static void main(String[] args) throws Exception {
-        N = Integer.parseInt(reader.readLine());
-        if (N == 0) {
-            System.out.println(0);
-            return;
-        }
+        int n = Integer.parseInt(reader.readLine());
+        list = new ArrayList<>();
 
-        if (N > 1022) {
-            System.out.println(-1);
-            return;
-        } else if (N == 1022) {
-            System.out.println("9876543210");
-            return;
-        }
-
-        for (int i=0; i<11; i++) {
-            storage[i] = i;
-        }
-
-
-        for (int i=20; ;) {
-            if (i == 987654321) {
-                break;
+        if(n <= 10) System.out.println(n);
+        else if(n > 1022) System.out.println("-1");
+        else {
+            for(int i = 0; i < 10; i++) {
+                bp(i, 1);
             }
+            Collections.sort(list);
 
-            System.out.println(getDigit(i));
-
-            if (isDecrementNum(i)) {
-                System.out.println("isDecrementNum : "+ i);
-                storage[idx++] = i;
-            }
-
-            i++;
+            System.out.println(list.get(n));
         }
+    }
 
-        System.out.println(idx);
-        for (int i=0; i<idx; i++) {
-            System.out.print(storage[i] + " ");
+    public static void bp(long num, int idx) {
+        if(idx > 10) return;
+
+        list.add(num);
+        for(int i = 0; i < num % 10; i++) {
+            bp((num * 10) + i, idx + 1);
         }
-        System.out.println();
-        System.out.println(storage[N] == 0 ? -1 : storage[N]);
-
-        reader.close();
     }
 
     static boolean isDecrementNum(int n) {
@@ -80,11 +59,14 @@ public class p1038 {
     }
 
     static int getDigit(int n) {
-        int digit = 1;
-        while (n/10 > 0) {
-            n /= 10;
-            digit++;
+        int[] digitArr = {0, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000};
+
+        for (int i=digitArr.length-1; i>=0; i--) {
+            if (n > digitArr[i]) {
+                return i+1;
+            }
         }
-        return digit;
+
+        return -1;
     }
 }
