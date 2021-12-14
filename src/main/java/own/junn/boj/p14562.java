@@ -1,6 +1,5 @@
 package own.junn.boj;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
@@ -20,7 +19,6 @@ public class p14562 {
     static int B;
 
     static int[] visited = new int[200];
-    static int answer;
 
     public static void main(String[] args) throws Exception {
         T = Integer.parseInt(reader.readLine());
@@ -31,44 +29,51 @@ public class p14562 {
             A = Integer.parseInt(st.nextToken());
             B = Integer.parseInt(st.nextToken());
 
-            Arrays.fill(visited, -1);
+            Arrays.fill(visited, 300);
 
-            bfs();
-            System.out.println(visited[A]);
+            int answer = bfs();
+            System.out.println(answer);
         }
 
         reader.close();
     }
 
-    static void bfs() {
+    static int bfs() {
         Queue<Point> queue = new LinkedList<>();
-        queue.add(new Point(A, B));
-        visited[A] = 0;
+        queue.add(new Point(A, B, 0));
 
         while (!queue.isEmpty()) {
             Point node = queue.poll();
 
             if (node.x == node.y) {
-                A = node.x;
-                B = node.y;
-                break;
+                return node.depth;
             }
 
-            for (int i=0; i<2; i++) {
-                int aa, ab;
-                if (i == 0) {
-                    aa = node.x * 2;
-                    ab = node.y + 3;
-                } else {
-                    aa = node.x + 1;
-                    ab = node.y;
-                }
+            int aa, ab;
+            aa = node.x * 2;
+            ab = node.y + 3;
 
-                if (aa <= ab && visited[aa] == -1) {
-                    visited[aa] = visited[node.x] + 1;
-                    queue.add(new Point(aa, ab));
-                }
+            if (aa <= ab) {
+                queue.add(new Point(aa, ab, node.depth + 1));
             }
+
+            aa = node.x + 1;
+            ab = node.y;
+            queue.add(new Point(aa, ab, node.depth + 1));
+        }
+
+        return 0;
+    }
+
+    static class Point {
+        int x;
+        int y;
+        int depth;
+
+        public Point(int x, int y, int depth) {
+            this.x = x;
+            this.y = y;
+            this.depth = depth;
         }
     }
 }
