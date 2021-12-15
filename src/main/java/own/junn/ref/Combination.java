@@ -1,17 +1,60 @@
 package own.junn.ref;
 
+import java.util.Arrays;
+
 public class Combination {
     public static void main(String[] args) {
-        int[] arr = {1, 0, 2};
+        int[] arr = {1, 5, 2, 3, 4};
         boolean[] visited = new boolean[arr.length];
         int n = arr.length;
         int r = 3;
 
-        System.out.println("=====recursive=====");
-        recursiveCombination(arr, visited, 0, n, r);
+        System.out.println("### combination ###");
+        combination(arr, new int[n], visited, 0, n, r);
         System.out.println();
-        System.out.println("=====backtracking=====");
-        backtrackingCombination(arr, visited, 0, n, r);
+        System.out.println("### permutation ###");
+        permutation(arr, new int[n], visited, 0, n, r);
+
+//        System.out.println("=====recursive=====");
+//        recursiveCombination(arr, visited, 0, n, r);
+//        System.out.println();
+//        System.out.println("=====backtracking=====");
+//        backtrackingCombination(arr, visited, 0, n, r);
+    }
+
+    static void combination(int[] arr, int[] temp, boolean[] visited, int start, int n, int r) {
+        if (r == 0) {
+            // TODO Processing
+            System.out.println(Arrays.toString(temp));
+            System.out.println(Arrays.toString(visited));
+            return;
+        }
+
+        for (int i = start; i < n; i++) {
+            temp[i] = arr[i];
+            visited[i] = true;
+            combination(arr, temp, visited, i + 1, n, r - 1);
+            temp[i] = 0;
+            visited[i] = false;
+        }
+    }
+
+    static void permutation(int[] arr, int[] temp, boolean[] visited, int start, int n, int r) {
+        if (r == start) {
+            // TODO Processing
+            System.out.println(Arrays.toString(temp));
+            System.out.println(Arrays.toString(visited));
+            return;
+        }
+
+        for (int i=0; i<n; i++) {
+            if (!visited[i]) {
+                temp[start] = arr[i];
+                visited[i] = true;
+                permutation(arr, temp, visited, start+1, n, r);
+                visited[i] = false;
+            }
+        }
     }
 
     /**
