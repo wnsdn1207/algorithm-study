@@ -45,11 +45,14 @@ public class p20166 {
 
     static char[][] chars;
 
+    // 신의 문자만 담아놓고, 마지막 출력을 위해 필요한 배열
     static String[] strs;
     static Map<String, Integer> map = new HashMap<>();
 
+    // 문자열 길이는 최소 1, 최대 5지만, 불필요한 계산을 줄이기 위해 사용
     static int MAX_LENGTH;
 
+    // x축, y축 이동 방향 (왼좌아래부터 반시계방향으로 돎)
     static int[] dx = {1, 1, 1, 0, -1, -1, -1, 0};
     static int[] dy = {-1, 0, 1, 1, 1, 0, -1, -1};
 
@@ -67,10 +70,9 @@ public class p20166 {
         }
 
         for (int n=0; n<K; n++) {
-            String likes = reader.readLine();
-            MAX_LENGTH = Math.max(MAX_LENGTH, likes.length());
-            map.put(likes, 0);
-            strs[n] = likes;
+            strs[n] = reader.readLine();
+            MAX_LENGTH = Math.max(MAX_LENGTH, strs[n].length());
+            map.put(strs[n], 0);
         }
 
         for (int i=0; i<N; i++) {
@@ -79,11 +81,11 @@ public class p20166 {
             }
         }
 
-        System.out.println("Map : " + map.entrySet());
+//        System.out.println("Map : " + map.entrySet());
 
         StringBuilder sb = new StringBuilder();
-        for (String key : strs) {
-            sb.append(map.get(key)).append("\n");
+        for (int i=0; i<K; i++) {
+            sb.append(map.get(strs[i])).append("\n");
         }
 
         System.out.println(sb);
@@ -93,57 +95,51 @@ public class p20166 {
 
     static void bfs(int x, int y, String s) {
         Queue<Point> queue = new LinkedList<>();
-        queue.add(new Point(x, y, 1, s));
+        queue.add(new Point(x, y, s));
 
         while (!queue.isEmpty()) {
-            Point node = queue.peek();
+            Point node = queue.poll();
+            // 신의 문자열 중 하나일 경우, count 증가
             if (map.containsKey(node.s)) {
                 map.put(node.s, map.get(node.s) + 1);
             }
-            if (node.cnt == MAX_LENGTH) {
+//            System.out.printf("node_information => [x : %d, y : %d, s : %s]\n", node.x, node.y, node.s);
+            if (node.s.length() == MAX_LENGTH) {
                 continue;
             }
-            queue.poll();
 
+            // x, y축 8방향 이동
             for (int i=0; i<8; i++) {
                 int ax = node.x + dx[i];
                 int ay = node.y + dy[i];
 
+                // x축 막다른 지점에 도달했을 시, 반대쪽 끝 위치로 이동
                 if (ax < 0) {
                     ax = N-1;
-                } else if (ax == N) {
+                } else if (ax >= N) {
                     ax = 0;
                 }
 
+                // y축 막다른 지점에 도달했을 시, 반대쪽 끝 위치로 이동
                 if (ay < 0) {
                     ay = M-1;
-                } else if (ay == M) {
+                } else if (ay >= M) {
                     ay = 0;
                 }
 
-                queue.add(new Point(ax, ay, node.cnt + 1, node.s + chars[ax][ay]));
+                queue.add(new Point(ax, ay, node.s + chars[ax][ay]));
             }
         }
-
-//        while (!queue.isEmpty()) {
-//            Point node = queue.poll();
-//
-//            if (map.containsKey(node.s)) {
-//                map.put(node.s, map.get(node.s) + 1);
-//            }
-//        }
     }
 
     static class Point {
         int x;
         int y;
-        int cnt;
         String s;
 
-        public Point(int x, int y, int cnt, String s) {
+        public Point(int x, int y, String s) {
             this.x = x;
             this.y = y;
-            this.cnt = cnt;
             this.s = s;
         }
     }
