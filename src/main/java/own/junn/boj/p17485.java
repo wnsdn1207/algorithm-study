@@ -2,10 +2,7 @@ package own.junn.boj;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * 17485 - 진우의 달 여행 (Large)
@@ -29,10 +26,10 @@ public class p17485 {
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     static int N, M;
+    // 위치별 연료 소모량을 저장하는 배열
     static int[][] map;
-    static int[][] dp;
-
-    static int[] dy = {-1, 0, 1};
+    // 연료 소모량의 합을 각 방향별로 저장하는 3차원 배열
+    static int[][][] dp;
 
     public static void main(String[] args) throws Exception {
         String[] input = reader.readLine().split(" ");
@@ -41,7 +38,8 @@ public class p17485 {
         M = Integer.parseInt(input[1]);
 
         map = new int[N][M];
-        dp = new int[N][M];
+        // 왼쪽아래, 아래, 오른쪽아래 총 3가지 방향이 있기 때문에 3으로 선언
+        dp = new int[N][M][3];
 
         StringTokenizer st;
         for (int i=0; i<N; i++) {
@@ -52,144 +50,52 @@ public class p17485 {
             }
         }
 
-        dp[0] = map[0].clone();
+        // dp 배열의 0번쨰 배열의 값들을 초기화
+        for (int i=0; i<M; i++) {
+            dp[0][i][0] = map[0][i];
+            dp[0][i][1] = map[0][i];
+            dp[0][i][2] = map[0][i];
+        }
 
-        for (int j=0; j<M; j++) {
-            int[][] tmp = new int[N][M];
-            tmp[0] = map[0].clone();
-
-            for (int i=1; i<N; i++) {
-                int add = map[i][j];
-                int stan;
-                if (j == 0) {
-                    stan = tmp[i-1][j+1];
-                    if (i%2 == 1) {
-                        stan = Math.min(stan, tmp[i-1][j]);
-                    }
-                } else if (j == M-1) {
-                    stan = tmp[i-1][j-1];
-                    if (i%2 == 1) {
-                        stan = Math.min(stan, tmp[i-1][j]);
-                    }
-                } else {
-                    stan = Math.min(tmp[i-1][j-1], tmp[i-1][j+1]);
-                    if (i%2 == 1) {
-                        stan = Math.min(stan, tmp[i-1][j]);
-                    }
-                }
-
-                tmp[i][j] = stan + add;
-            }
-            System.out.println("tmp : "+ Arrays.deepToString(tmp));
-
-            // dp에 최소값 세팅
-            for (int x=1; x<N; x++) {
-                for (int y=0; y<M; y++) {
-                    if (dp[x][y] == 0 || dp[x][y] > 0 && tmp[x][y] > 0) {
-                        dp[x][y] = Math.min(dp[x][y], tmp[x][y]);
-                    }
-                }
-            }
+        for (int i=0; i<N; i++) {
+            // j==0인 경우, 왼쪽 대각선 방향으로부터 올 수 없음
+            dp[i][0][0] = Integer.MAX_VALUE;
+            // j==M-1인 경우, 오른쪽 대각선 방향으로부터 올 수 없음
+            dp[i][M-1][2] = Integer.MAX_VALUE;
         }
 
         for (int i=1; i<N; i++) {
             for (int j=0; j<M; j++) {
+                // 해당하는 자리의 값
                 int add = map[i][j];
-                int stan;
-                if (j == 0) {
-                    stan = dp[i-1][j+1];
-                    if (i%2 == 1) {
-                        stan = Math.min(stan, dp[i-1][j]);
-                    }
-                } else if (j == M-1) {
-                    stan = dp[i-1][j-1];
-                    if (i%2 == 1) {
-                        stan = Math.min(stan, dp[i-1][j]);
-                    }
+
+                if (j==0) {
+                    // 왼쪽 끝인 경우, 아래 방향 또는 오른쪽 아래 방향으로 왔을 때만 가능
+                    dp[i][j][1] = Math.min(dp[i-1][j][0], dp[i-1][j][2]) + add;
+                    dp[i][j][2] = Math.min(dp[i-1][j+1][0], dp[i-1][j+1][1]) + add;
+                } else if (j==M-1) {
+                    // 오른쪽 끝인 경우, 아래 방향 또는 왼쪽 아래 방향으로 왔을 때만 가능
+                    dp[i][j][0] = Math.min(dp[i-1][j-1][1], dp[i-1][j-1][2]) + add;
+                    dp[i][j][1] = Math.min(dp[i-1][j][0], dp[i-1][j][2]) + add;
                 } else {
-                    stan = Math.min(dp[i-1][j-1], dp[i-1][j+1]);
-                    if (i%2 == 1) {
-                        stan = Math.min(stan, dp[i-1][j]);
-                    }
+                    // 그 외 경우, 왼쪽 아래, 오른쪽 아래, 아래 방향으로 왔을 때 모두 가능
+                    dp[i][j][0] = Math.min(dp[i-1][j-1][1], dp[i-1][j-1][2]) + add;
+                    dp[i][j][1] = Math.min(dp[i-1][j][0], dp[i-1][j][2]) + add;
+                    dp[i][j][2] = Math.min(dp[i-1][j+1][0], dp[i-1][j+1][1]) + add;
                 }
-                dp[i][j] = stan + add;
             }
         }
 
-//        for (int i=0; i<M; i++) {
-//            bfs(0, i);
-//        }
-
-        for (int[] arr : map) {
-            System.out.println("mp : "+ Arrays.toString(arr));
-        }
-        System.out.println();
-        for (int[] arr : dp) {
-            System.out.println("dp : "+ Arrays.toString(arr));
-        }
         int result = Integer.MAX_VALUE;
-        for (int i : dp[N-1]) {
-            result = Math.min(result, i);
+        // 각 열마다 3개의 방향에서 최소값을 찾음
+        for (int j=0; j<M; j++) {
+            for (int n=0; n<3; n++) {
+                result = Math.min(result, dp[N-1][j][n]);
+            }
         }
 
         System.out.println(result);
 
         reader.close();
-    }
-
-    static void bfs(int x, int y) {
-        Queue<Direction> queue = new LinkedList<>();
-        queue.add(new Direction(x, y, -1, map[x][y]));
-
-        while (!queue.isEmpty()) {
-            Direction node = queue.poll();
-            if (node.x == N-1) {
-                break;
-            }
-
-            for (int i=0; i<3; i++) {
-                if (node.direction == i) {
-                    continue;
-                }
-
-                int ax = node.x + 1;
-                int ay = node.y + dy[i];
-
-//                System.out.printf("ax : %d, ay : %d\n", ax, ay);
-
-                if (validRange(ay)) {
-                    if (dp[ax][ay] == 0) {
-                        dp[ax][ay] = node.cnt + map[ax][ay];
-
-                    } else {
-                        int tmp = node.cnt + map[ax][ay];
-
-                        // 기존에 존재하는 값이 신규 값보다 클 경우
-                        if (dp[ax][ay] > tmp) {
-                            dp[ax][ay] = tmp;
-                        }
-                    }
-                    queue.add(new Direction(ax, ay, i, node.cnt + map[ax][ay]));
-                }
-            }
-        }
-    }
-
-    static boolean validRange(int y) {
-        return y >= 0 && y < M;
-    }
-
-    static class Direction {
-        int x;
-        int y;
-        int direction;
-        int cnt;
-
-        public Direction(int x, int y, int direction, int cnt) {
-            this.x = x;
-            this.y = y;
-            this.direction = direction;
-            this.cnt = cnt;
-        }
     }
 }
