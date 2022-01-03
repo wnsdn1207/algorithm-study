@@ -22,11 +22,9 @@ public class p18310 {
 
     static int N;
     static int[] antennas;
-    static int[] dp;
     public static void main(String[] args) throws Exception {
         N = Integer.parseInt(reader.readLine());
         antennas = new int[N];
-        dp = new int[N];
 
         StringTokenizer st = new StringTokenizer(reader.readLine());
         for (int i=0; i<N; i++) {
@@ -34,22 +32,20 @@ public class p18310 {
         }
 
         Arrays.sort(antennas);
-        System.out.println(Arrays.toString(antennas));
+        System.out.println(antennas[(N-1)/2]);
 
-        int minVal = Integer.MAX_VALUE, minIdx = -1;
-        for (int i=0; i<N; i++) {
-            int sum = 0;
-            for (int j=0; j<N; j++) {
-                sum += Math.abs(antennas[i] - antennas[j]);
-            }
-
-            if (minVal > sum) {
-                minVal = sum;
-                minIdx = i;
-            }
-        }
-
-        System.out.println(antennas[minIdx]);
+        /**
+         * 정렬 후에 합산 계산을 해보면 중간 인덱스 부근에 있는 데이터들이 항상 최솟값이 나온다.
+         */
+//        for (int i=0; i<N; i++) {
+//            int sum = 0;
+//            for (int j=0; j<N; j++) {
+//                sum += Math.abs(antennas[i] - antennas[j]);
+//            }
+//
+//            System.out.print(sum + " ");
+//        }
+//        System.out.println();
 
         reader.close();
     }
