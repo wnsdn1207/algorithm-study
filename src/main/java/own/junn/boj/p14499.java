@@ -94,6 +94,8 @@ public class p14499 {
     // 동쪽은 1, 서쪽은 2, 북쪽은 3, 남쪽은 4
     static int[] dx = {0, 0, 0, -1, 1}, dy = {0, 1, -1, 0, 0};
 
+    static StringBuilder sb = new StringBuilder();
+
     public static void main(String[] args) throws Exception {
         StringTokenizer st = new StringTokenizer(reader.readLine());
 
@@ -113,17 +115,17 @@ public class p14499 {
 
         st = new StringTokenizer(reader.readLine());
 
+        // 주사위 객체
         Dice dice = new Dice();
         int ax=x, ay=y;
         for (int i=0; i<T; i++) {
             int direction = Integer.parseInt(st.nextToken());
 
+            // ax와 ay에 초기 위치를 설정해주고, 해당 위치를 입력된 명령어 수만큼 계속해서 갱신한다.
             ax += dx[direction];
             ay += dy[direction];
 
-//            System.out.printf("ax : %d, ay : %d\n", ax, ay);
-//            System.out.printf("map : %d\n", map[ax][ay]);
-
+            // 갱신한 값의 범위를 체크하여 map의 범위를 벗어날 경우, 다시 ax와 ay를 이전으로 복구하고 다음 명령을 수행한다.
             if (!validRange(ax, ay)) {
                 ax -= dx[direction];
                 ay -= dy[direction];
@@ -131,17 +133,27 @@ public class p14499 {
                 continue;
             }
 
-//            System.out.println("Before : "+ dice);
-            System.out.println(dice.move(direction, map[ax][ay]));
-            if (map[ax][ay] > 0)
+            // dice.move() 메소드를 통해 주사위의 윗면의 값을 반환받는다.
+            sb.append(dice.move(direction, map[ax][ay])).append("\n");
+            if (map[ax][ay] > 0) {
                 map[ax][ay] = 0;
-//            System.out.println("After : "+ dice);
-//            System.out.println("######################################################");
+            } else if (map[ax][ay] == 0) {
+                map[ax][ay] = dice.bottom;
+            }
         }
+
+        System.out.println(sb);
 
         reader.close();
     }
 
+    /**
+     * x위치와 y위치의 범위를 체크하여 정상 범위인지 체크해주는 Method
+     *
+     * @param x x index value
+     * @param y y index value
+     * @return x와 y 모두 정상 범위일 경우 true, 아닐 경우 false
+     */
     static boolean validRange(int x, int y) {
         return x >= 0 && x < N && y >= 0 && y < M;
     }
@@ -163,9 +175,17 @@ public class p14499 {
             this.right = 0;
         }
 
+        /**
+         * 인자로 들어온 direction 방향으로 주사위를 굴리고, 그 때의 주사위의 각 면의 값들을 갱신시켜주는 Method
+         *
+         * @param direction 방향 Index
+         * @param ground 이동할 위치의 바닥에 적힌 숫자
+         * @return 이동이 완료된 주사위의 윗면에 적힌 값
+         */
         int move(int direction, int ground) {
             int pTop=top, pRight=right, pBottom=bottom, pLeft=left, pFront=front, pBack=back;
             if (Direction.EAST.equals(Direction.find(direction))) {
+                // 바닥에 적힌 숫자값이 0보다 클 경우에만 바닥이 될 면의 값으로 세팅한다.
                 if (ground > 0) pRight = ground;
 
                 top = pLeft;
@@ -198,6 +218,9 @@ public class p14499 {
             return top;
         }
 
+        /**
+         * 위치를 나타내는 Enum Class
+         */
         enum Direction {
             EAST(1),
             WEST(2),
