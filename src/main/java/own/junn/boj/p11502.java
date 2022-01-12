@@ -60,6 +60,12 @@ public class p11502 {
         reader.close();
     }
 
+    /**
+     * 에라토스테네스의 체 (최적화 Version)
+     *
+     * 2부터 해당 수의 제곱근까지 돌린다. (∵ i^2을 arr의 길이만큼 돌릴 것이므로)
+     * 0보다 큰 데이터 즉, 검증이 안 된 데이터에 한하여 데이터를 삭제처리 해준다. (0 세팅)
+     */
     static void primeSieve() {
         for (int i=2; i<Math.sqrt(arr.length); i++) {
             if (arr[i] > 0) {
