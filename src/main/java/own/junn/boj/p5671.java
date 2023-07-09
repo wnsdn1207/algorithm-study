@@ -1,7 +1,5 @@
 package own.junn.boj;
 
-import com.sun.java.swing.plaf.windows.WindowsDesktopPaneUI;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;

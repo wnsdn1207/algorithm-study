@@ -1,6 +1,5 @@
 package own.junn.boj;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;

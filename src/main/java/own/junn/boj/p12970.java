@@ -1,10 +1,7 @@
 package own.junn.boj;
 
-import com.sun.javafx.binding.StringFormatter;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.*;
 
 /**
  * 12970 - AB
