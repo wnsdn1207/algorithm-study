@@ -346,4 +346,84 @@ public class Test {
 
 //        System.out.println(childClass);
     }
+
+    @org.junit.jupiter.api.Test
+    public void numberTest2() {
+//        int num1 = 998820420;
+//        int num2 = 942420420;
+//        int num3 = 78820420;
+//        int num4 = 2820420;
+//        int num5 = 338820420;
+//        int num6 = 96720420;
+//
+//        System.out.println(num1 / 30);
+//        System.out.println(num2 / 30);
+//        System.out.println(num3 / 30);
+//        System.out.println(num4 / 30);
+//        System.out.println(num5 / 30);
+//        System.out.println(num6 / 30);
+
+        int a = 1;
+        System.out.println((a << 31) - 1);
+        System.out.println(Integer.MAX_VALUE);
+    }
+
+    @org.junit.jupiter.api.Test
+    void comparableTest() {
+        Integer[] arr = {1,7,3,4,6,9,2,5,0};
+
+        // 양수이면 내림차순
+        Arrays.sort(arr, (o1, o2) -> o2 - o1);
+
+        System.out.println(Arrays.toString(arr));
+    }
+
+    @org.junit.jupiter.api.Test
+    void etcTest() {
+        HashMap<String, String> map = new HashMap<>();
+    }
+
+    @org.junit.jupiter.api.Test
+    void charTest2() {
+        String a = "A";
+        System.out.println((int) a.charAt(0));
+    }
+
+    @org.junit.jupiter.api.Test
+    void decidePrice() {
+        int[] knit = {0, 33600};
+        int[] slacks = {0, 36800};
+        int[] blouse = {0, 35200};
+        int[] onePiece = {0, 32000};
+
+        StringBuilder sb = new StringBuilder();
+        for (int a : knit) {
+            for (int b : slacks) {
+                for (int c : blouse) {
+                    for (int d : onePiece) {
+                        int sum = a + b + c + d;
+
+                        if (a > 0) {
+                            sb.append("Knit + ");
+                        }
+                        if (b > 0) {
+                            sb.append("Slacks + ");
+                        }
+                        if (c > 0) {
+                            sb.append("Blouse + ");
+                        }
+                        if (d > 0) {
+                            sb.append("One-Piece + ");
+                        }
+                        if (sum > 0) {
+                            if (a > 0 && b > 0 && c > 0 && d > 0) sum *= 0.95;
+                            sb.append(sum);
+                        }
+                        System.out.println(sb);
+                        sb.setLength(0);
+                    }
+                }
+            }
+        }
+    }
 }
